@@ -1,0 +1,80 @@
+/* Grid */
+
+.page{
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.container{
+	max-width: 1200px;
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.container-fluid{
+	max-width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.row{
+	display: flex;
+	margin-left: -15px;
+	margin-right: -15px;
+	margin-bottom: -30px;
+}
+
+.col{
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-bottom: 30px;
+}
+
+$grid__cols: 12;
+
+@mixin create-mq($breakpoint) {
+	@if($breakpoint == 0) {
+		@content;
+	}
+	@else {
+		@media (min-width: $breakpoint *1px) {
+			@content;
+		}
+	}
+}
+
+@mixin create-col-classes($modifier, $grid__cols, $breakpoint) {
+	@include create-mq($breakpoint) {
+		@for $i from 1 through $grid__cols {
+			.col#{$modifier}-#{$i} {
+				flex-basis: (100 / ($grid__cols / $i) ) * 1%;
+			}
+		}
+	}
+}
+
+$grid__bp-sm: 576;
+$grid__bp-md: 768;
+$grid__bp-lg: 992;
+$grid__bp-xl: 1200;
+$map-grid-props: (
+		'': 0,
+		'-sm': $grid__bp-sm,
+		'-md': $grid__bp-md,
+		'-lg': $grid__bp-lg,
+		'-xl': $grid__bp-xl
+);
+
+$map-grid-props: ('': 0, '-sm': $grid__bp-sm, '-md': $grid__bp-md, '-lg': $grid__bp-lg, '-xl': $grid__bp-xl);
+@each $modifier , $breakpoint in $map-grid-props {
+	@include create-col-classes($modifier, $grid__cols, $breakpoint);
+}
+
+footer{
+	margin-top: auto;
+}
+
